@@ -1,5 +1,5 @@
 # LTS https://wiki.ubuntu.com/Releases
-FROM ubuntu:20.04.3
+FROM ubuntu:20.04
 
 
 ARG FLUX2_VERSION=0.25.3
