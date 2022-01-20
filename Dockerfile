@@ -11,6 +11,8 @@ LABEL helm3_version=$HELM3_VERSION
 LABEL terraform_version="1.1.3"
 LABEL flux2_version=$FLUX2_VERSION
 
+RUN apt-get update
+
 RUN apt-get install -y \
                       curl \
                       git \
