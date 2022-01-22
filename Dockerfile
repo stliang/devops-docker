@@ -1,6 +1,7 @@
 # LTS https://wiki.ubuntu.com/Releases
 FROM ubuntu:20.04
 
+ARG DEBIAN_FRONTEND=noninteractive
 
 ARG FLUX2_VERSION=0.25.3
 ARG HELM3_VERSION=v3.7.2
