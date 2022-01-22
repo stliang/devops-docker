@@ -4,12 +4,21 @@ FROM ubuntu:20.04
 
 ARG FLUX2_VERSION=0.25.3
 ARG HELM3_VERSION=v3.7.2
+
 ARG KUBECTL_VERSION=v1.23.0
 ARG K9S_VERSION=v0.25.18
 ARG KUBESEAL_VERSION=v0.16.0
 ARG KUBEVAL_VERSION=0.16.0
 ARG KUSTOMIZE_VERSION=v4.4.1
+ARG KYML_VERSION=20210610
+ARG POPEYE_VERSION=v0.9.6
+ARG PLUTO_VERSION=4.2.0
+ARG SOPS_VERSION=v3.7.1
 
+ARG TERRAFORM_DOCS_VERSION=v0.16.0
+ARG TFLINT_VERSION=v0.33.2
+ARG VCLUSTER_VERSION=v0.5.1
+ARG YQ_VERSION=v4.16.1
 
 # Labels.
 LABEL gcloud_version="369.0.0+"
@@ -79,6 +88,32 @@ RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomiz
     && tar xvf kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz \
     && mv kustomize /usr/local/bin/kustomize \
     && rm -rf kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz
+
+# kyml https://github.com/frigus02/kyml
+RUN curl -sfL -o /usr/local/bin/kyml https://github.com/frigus02/kyml/releases/download/v${KYML_VERSION}/kyml_${KYML_VERSION}_linux_amd64 \
+    && chmod +x /usr/local/bin/kyml
+
+# popeye (https://github.com/derailed/popeye)
+RUN curl -LO https://github.com/derailed/popeye/releases/download/${POPEYE_VERSION}/popeye_Linux_x86_64.tar.gz \
+    && tar xvzf popeye_Linux_x86_64.tar.gz \
+    && mv popeye /usr/local/bin/popeye \
+    && rm -rf LICENSE README.md popeye_Linux_x86_64.tar.gz
+
+# pluto (https://github.com/FairwindsOps/pluto)
+RUN curl -LO https://github.com/FairwindsOps/pluto/releases/download/v${PLUTO_VERSION}/pluto_${PLUTO_VERSION}_linux_amd64.tar.gz \
+    && tar xvzf pluto_${PLUTO_VERSION}_linux_amd64.tar.gz \
+    && mv pluto /usr/local/bin/pluto \
+    && rm -rf LICENSE README.md pluto_${PLUTO_VERSION}_linux_amd64.tar.gz
+
+# sops (https://github.com/mozilla/sops)
+RUN curl -sSL -o /usr/local/bin/sops https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux \
+    && chmod +x /usr/local/bin/sops
+
+# terraform-docs (https://github.com/terraform-docs/terraform-docs)
+RUN wget https://github.com/terraform-docs/terraform-docs/releases/download/${TERRAFORM_DOCS_VERSION}/terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz \
+    && tar xvzf terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz \
+    && mv terraform-docs /usr/local/bin/terraform-docs \
+    && rm -rf LICENSE README.md terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz
 
 # The mounted parent dir that contains all your own 'git clone' repos.
 # This dir is going to be mounted via 'docker -v ...'
