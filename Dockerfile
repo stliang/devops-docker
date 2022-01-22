@@ -34,16 +34,27 @@ RUN apt-get update
 
 RUN apt-get install -y \
                       curl \
+                      dnsutils \
+                      fonts-powerline \
                       git \
+                      iproute2 \
                       jq \
+                      lsof \
                       netcat \
                       net-tools \
-                      openssl \
                       python3 \
                       python3-pip \
+                      software-properties-common \
+                      sudo \
+                      tree \
                       unzip \
                       vim \
-                      wget
+                      wget \
+                      zip \
+                      zsh \
+                      zsh-syntax-highlighting \
+    && rm -rf /var/lib/apt/lists/*
+
                       
 # gcp gcloud
 RUN curl https://sdk.cloud.google.com > install.sh \
