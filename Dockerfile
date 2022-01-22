@@ -1,6 +1,7 @@
 # LTS https://wiki.ubuntu.com/Releases
 FROM ubuntu:20.04
 
+# avoid interaction when installing software-properties-common
 ARG DEBIAN_FRONTEND=noninteractive
 
 ARG FLUX2_VERSION=0.25.3
