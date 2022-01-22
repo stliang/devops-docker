@@ -168,6 +168,18 @@ RUN curl -s -L "https://github.com/loft-sh/vcluster/releases/${VCLUSTER_VERSION}
 RUN wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64.tar.gz -O - | \
     tar xz && mv yq_linux_amd64 /usr/bin/yq
 
+# oh-my-zsh (https://github.com/ohmyzsh/ohmyzsh#unattended-install)
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# zsh-autosuggestions (https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh)
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions /root/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+# oh-my-zsh plugins
+#   - https://github.com/ohmyzsh/ohmyzsh#enabling-plugins)=
+#   - https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh
+RUN sed -i 's/plugins=(git)/plugins=(git kube-ps1 zsh-autosuggestions)/' ~/.zshrc
+
+
 # The mounted parent dir that contains all your own 'git clone' repos.
 # This dir is going to be mounted via 'docker -v ...'
 WORKDIR /GITHUB
