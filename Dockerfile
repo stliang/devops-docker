@@ -30,7 +30,10 @@ LABEL kubeseal_version=$KUBESEAL_VERSION
 LABEL kubeval_version=$KUBEVAL_VERSION
 LABEL kustomize_version=$KUSTOMIZE_VERSION
 
-RUN apt-get update
+RUN apt-get update && \
+    apt-get install -y locales \
+    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen en_US.UTF-8
 
 RUN apt-get install -y \
                       curl \
