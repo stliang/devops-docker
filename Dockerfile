@@ -16,6 +16,10 @@ LABEL gcloud_version="369.0.0+"
 LABEL helm3_version=$HELM3_VERSION
 LABEL terraform_version="1.1.3"
 LABEL flux2_version=$FLUX2_VERSION
+LABEL k9s_version=$K9S_VERSION
+LABEL kubeseal_version=$KUBESEAL_VERSION
+LABEL kubeval_version=$KUBEVAL_VERSION
+LABEL kustomize_version=$KUSTOMIZE_VERSION
 
 RUN apt-get update
 
