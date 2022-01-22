@@ -5,6 +5,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ARG FLUX2_VERSION=0.25.3
 ARG HELM3_VERSION=v3.7.2
+ARG GOMPLATE_VERSION=v3.9.0
 
 ARG KUBECTL_VERSION=v1.23.0
 ARG K9S_VERSION=v0.25.18
@@ -90,6 +91,10 @@ RUN wget https://github.com/fluxcd/flux2/releases/download/v${FLUX2_VERSION}/flu
     && mv flux /usr/local/bin/flux \
     && rm -rf flux_${FLUX2_VERSION}_linux_arm64.tar.gz
     
+# gomplate (https://github.com/hairyhenderson/gomplate)
+RUN curl -o /usr/local/bin/gomplate -sSL https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64 \
+    && chmod 755 /usr/local/bin/gomplate
+    
 # kubectl (https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 RUN curl -LO https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
     && install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
@@ -132,6 +137,10 @@ RUN curl -LO https://github.com/FairwindsOps/pluto/releases/download/v${PLUTO_VE
     && tar xvzf pluto_${PLUTO_VERSION}_linux_amd64.tar.gz \
     && mv pluto /usr/local/bin/pluto \
     && rm -rf LICENSE README.md pluto_${PLUTO_VERSION}_linux_amd64.tar.gz
+
+# sops (https://github.com/mozilla/sops)
+RUN curl -sSL -o /usr/local/bin/sops https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux \
+    && chmod +x /usr/local/bin/sops
 
 # sops (https://github.com/mozilla/sops)
 RUN curl -sSL -o /usr/local/bin/sops https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux \
