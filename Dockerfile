@@ -67,6 +67,19 @@ RUN wget https://raw.githubusercontent.com/fluxcd/flux2-kustomize-helm-example/m
     && mv validate.sh /usr/local/bin/validate-flux.sh
 RUN chmod 755 /usr/local/bin/validate-flux.sh
 
+# helm (https://helm.sh/docs/helm/helm_install/)
+RUN curl -LO https://get.helm.sh/helm-${HELM3_VERSION}-linux-amd64.tar.gz \
+    && tar -zxvf helm-${HELM3_VERSION}-linux-amd64.tar.gz \
+    && mv linux-amd64/helm /usr/local/bin/helm3 \
+    && rm -rf helm-${HELM3_VERSION}-linux-amd64.tar.gz linux-amd64
+
+RUN ln -s /usr/local/bin/helm3 /usr/local/bin/helm
+
+# https://github.com/databus23/helm-diff
+RUN mkdir -p ~/.helm/plugins \
+    && helm3 plugin install https://github.com/databus23/helm-diff \
+    && rm -rf /tmp/helm-diff*
+    
 # flux cli (https://github.com/fluxcd/flux2)
 RUN wget https://github.com/fluxcd/flux2/releases/download/v${FLUX2_VERSION}/flux_${FLUX2_VERSION}_linux_arm64.tar.gz \
     && tar xvzf flux_${FLUX2_VERSION}_linux_arm64.tar.gz \
@@ -126,12 +139,6 @@ RUN wget https://github.com/terraform-docs/terraform-docs/releases/download/${TE
     && mv terraform-docs /usr/local/bin/terraform-docs \
     && rm -rf LICENSE README.md terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz
 
-# terraform-docs (https://github.com/terraform-docs/terraform-docs)
-RUN wget https://github.com/terraform-docs/terraform-docs/releases/download/${TERRAFORM_DOCS_VERSION}/terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz \
-    && tar xvzf terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz \
-    && mv terraform-docs /usr/local/bin/terraform-docs \
-    && rm -rf LICENSE README.md terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz
-
 RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
 
 # tflint (https://github.com/terraform-linters/tflint)
@@ -152,4 +159,4 @@ RUN wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linu
 # This dir is going to be mounted via 'docker -v ...'
 WORKDIR /GITHUB
 
-ENTRYPOINT [ "/bin/sh" ]
+ENTRYPOINT [ "/bin/zsh" ]
