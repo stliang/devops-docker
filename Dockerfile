@@ -115,6 +115,28 @@ RUN wget https://github.com/terraform-docs/terraform-docs/releases/download/${TE
     && mv terraform-docs /usr/local/bin/terraform-docs \
     && rm -rf LICENSE README.md terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz
 
+# terraform-docs (https://github.com/terraform-docs/terraform-docs)
+RUN wget https://github.com/terraform-docs/terraform-docs/releases/download/${TERRAFORM_DOCS_VERSION}/terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz \
+    && tar xvzf terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz \
+    && mv terraform-docs /usr/local/bin/terraform-docs \
+    && rm -rf LICENSE README.md terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz
+
+RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
+
+# tflint (https://github.com/terraform-linters/tflint)
+RUN wget https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/tflint_linux_amd64.zip \
+    && unzip tflint_linux_amd64.zip  \
+    && mv tflint /usr/local/bin/tflint \
+    && rm -rf tflint_linux_amd64.zip
+
+# vcluster (https://www.vcluster.com/)
+RUN curl -s -L "https://github.com/loft-sh/vcluster/releases/${VCLUSTER_VERSION}" | sed -nE 's!.*"([^"]*vcluster-linux-amd64)".*!https://github.com\1!p' | xargs -n 1 curl -L -o vcluster && chmod +x vcluster \
+    && mv vcluster /usr/local/bin
+
+# yq (https://github.com/mikefarah/yq)
+RUN wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64.tar.gz -O - | \
+    tar xz && mv yq_linux_amd64 /usr/bin/yq
+
 # The mounted parent dir that contains all your own 'git clone' repos.
 # This dir is going to be mounted via 'docker -v ...'
 WORKDIR /GITHUB
