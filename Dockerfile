@@ -23,6 +23,11 @@ ARG TFLINT_VERSION=v0.33.2
 ARG VCLUSTER_VERSION=v0.5.1
 ARG YQ_VERSION=v4.16.1
 
+# validate.sh flux sanity check
+RUN wget https://raw.githubusercontent.com/fluxcd/flux2-kustomize-helm-example/main/scripts/validate.sh \
+    && mv validate.sh /usr/local/bin/validate-flux.sh
+RUN chmod 755 /usr/local/bin/validate-flux.sh
+
 RUN apt-get update && \
     apt-get install -y locales \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -57,11 +62,6 @@ RUN curl https://sdk.cloud.google.com > install.sh \
     && bash install.sh --disable-prompts \
     && rm -rf install.sh
 ENV PATH=${PATH}:/root/google-cloud-sdk/bin
-
-# validate.sh flux sanity check
-RUN wget https://raw.githubusercontent.com/fluxcd/flux2-kustomize-helm-example/main/scripts/validate.sh \
-    && mv validate.sh /usr/local/bin/validate-flux.sh
-RUN chmod 755 /usr/local/bin/validate-flux.sh
 
 # helm, K8S deployment tool (https://helm.sh/docs/helm/helm_install/)
 RUN curl -LO https://get.helm.sh/helm-${HELM3_VERSION}-linux-amd64.tar.gz \
