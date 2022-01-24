@@ -11,18 +11,32 @@
 # 3.) You specify the local directory of your stored your github repos in $GITHUB_DIR
 
 
-DOCKER_PLATFORM
-DOCKER_CPUS
-DOCKER_MEMORY
+DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"  # Default linux/amd64
 
-GCP_DIR
-GIT_CONFIG_DIR
-KUBE_DIR
-ZSH_HISTORY_DIR
-GITHUB_DIR
+DOCKER_CPUS="${DOCKER_CPUS:-1}"                    # Default 1 cpu
+DOCKER_MEMORY="${DOCKER_MEMORY:-1g}"               # Default 1GB memory
 
-DOCKER_IMAGE
-IMAGE_TAG
+GCP_DIR="${HOME}/.config"
+KUBE_DIR="${HOME}/.kube"
+ZSH_HISTORY_FILE="${HOME}/.zsh_history"
+GIT_CONFIG_FILE="${HOME}/.gitconfig"
+GITHUB_DIR="${GITHUB_DIR:-${HOME}/GITHUB}"
+
+DOCKER_IMAGE="${DOCKER_IMAGE:-stliang/devops}"
+IMAGE_TAG="${IMAGE_TAG:-latest}"
+
+for DIR in ${GCP_DIR} ${KUBE_DIR} ${GITHUB_DIR}; do
+    if [[ ! -d ${DIR} ]]; then
+        echo "Creating ${DIR}"
+        mkdir -p ${DIR}
+    fi
+done
+
+for CONFIG_FILE in ${ZSH_HISTORY_FILE} ${GIT_CONFIG_FILE}; do
+    if [ ! -f ${CONFIG_FILE} ]; then
+        touch -a ${CONFIG_FILE}
+    fi
+done
 
 
 docker run --rm -it \
@@ -30,9 +44,9 @@ docker run --rm -it \
         --cpus     ${DOCKER_CPUS} \
         --memory   ${DOCKER_MEMORY} \
         -v ${GCP_DIR}:/root/.config \
-        -v ${GIT_CONFIG_DIR}:/root/.gitconfig \
+        -v ${GIT_CONFIG_FILE}:/root/.gitconfig \
         -v ${KUBE_DIR}:/root/.kube \
         -v ${HOME}/.ssh:/root/.ssh \
-        -v ${ZSH_HISTORY_DIR}:/root/.zsh_history \
+        -v ${ZSH_HISTORY_FILE}:/root/.zsh_history \
         -v ${GITHUB_DIR}:/GITHUB \
     ${DOCKER_IMAGE}:${IMAGE_TAG}
