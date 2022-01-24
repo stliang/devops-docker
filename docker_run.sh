@@ -47,6 +47,7 @@ for CONFIG_FILE in ${ZSH_HISTORY_FILE} ${GIT_CONFIG_FILE}; do
     fi
 done
 
+echo "Mounting ${GITHUB_DIR} as your a directory where you have your github repos."
 
 docker run --rm -it \
         --platform ${DOCKER_PLATFORM} \
