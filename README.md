@@ -6,3 +6,8 @@ Foundational infrastructure development local machine environment
 docker build --progress=plain -t devops .
 docker run -it  devops:latest
 ```
+
+## Test
+```
+gcloud compute instances list
+```
