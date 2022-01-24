@@ -23,11 +23,6 @@ ARG TFLINT_VERSION=v0.33.2
 ARG VCLUSTER_VERSION=v0.5.1
 ARG YQ_VERSION=v4.16.1
 
-# validate.sh flux sanity check
-RUN wget https://raw.githubusercontent.com/fluxcd/flux2-kustomize-helm-example/main/scripts/validate.sh \
-    && mv validate.sh /usr/local/bin/validate-flux.sh
-RUN chmod 755 /usr/local/bin/validate-flux.sh
-
 RUN apt-get update && \
     apt-get install -y locales \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -75,7 +70,12 @@ RUN ln -s /usr/local/bin/helm3 /usr/local/bin/helm
 RUN mkdir -p ~/.helm/plugins \
     && helm3 plugin install https://github.com/databus23/helm-diff \
     && rm -rf /tmp/helm-diff*
-    
+
+# validate.sh flux sanity check
+RUN wget https://raw.githubusercontent.com/fluxcd/flux2-kustomize-helm-example/main/scripts/validate.sh \
+    && mv validate.sh /usr/local/bin/validate-flux.sh
+RUN chmod 755 /usr/local/bin/validate-flux.sh
+
 # flux2 cli, gitops (https://github.com/fluxcd/flux2)
 RUN wget https://github.com/fluxcd/flux2/releases/download/v${FLUX2_VERSION}/flux_${FLUX2_VERSION}_linux_arm64.tar.gz \
     && tar xvzf flux_${FLUX2_VERSION}_linux_arm64.tar.gz \
