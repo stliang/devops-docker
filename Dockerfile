@@ -168,6 +168,9 @@ RUN git clone https://github.com/zsh-users/zsh-autosuggestions /root/.oh-my-zsh/
 #   - https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh
 RUN sed -i 's/plugins=(git)/plugins=(git kube-ps1 zsh-autosuggestions)/' ~/.zshrc
 
+# install Python packages
+RUN pip3 install -r requirements.txt
+
 ENV LC_ALL=en_US.utf-8
 ENV LANG=en_US.utf-8
 
