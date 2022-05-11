@@ -49,6 +49,7 @@ RUN apt-get install -y \
                       zip \
                       zsh \
                       zsh-syntax-highlighting \
+                      haskell-platform \
     && rm -rf /var/lib/apt/lists/*
 
                       
