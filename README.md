@@ -1,18 +1,14 @@
 # devops-terminal
 DevOps infrastructure development local machine environment
 
-## Build and Run Docker
+## Build
 ```
-docker build --progress=plain -t devops .
-docker run -it  devops:latest
 nerdctl build --progress=plain -t devops .
-nerdctl run -it  devops:latest
 ```
 
-## Bind Local Directory
+## Run & Bind Local Directory
 ```
-docker run -v ~/Documents/github/samples:/opt/app/data -it  devops:latest
-nerdctl run -v ~/Documents/github/samples:/opt/app/data -it  devops:latest
+nerdctl run -v ~/Documents/github/data:/opt/app/data -v ~/Documents/github/devops-terminal:/opt/app/devops-terminal -it  devops:latest
 ```
 
 ## Test
