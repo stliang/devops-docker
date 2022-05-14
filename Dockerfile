@@ -42,8 +42,14 @@ COPY ./python/requirements.txt .
 RUN pip3 install -r requirements.txt
 
 #>>> CABAL SETUP
+#WORKDIR /opt/app/haskell
 WORKDIR /opt/app/haskell/term
 RUN cabal update
+#RUN cabal install aeson
+#RUN cabal install lens-aeson 
+#RUN cabal install bytestring
+#RUN cabal install bytestring text
+#RUN cabal install happy yesod-bin
 
 # Add just the .cabal file to capture dependencies
 COPY ./haskell/term .
@@ -52,10 +58,12 @@ COPY ./haskell/term .
 # modify source code without re-installing dependencies
 # (unless the .cabal file changes!)
 RUN cabal build --only-dependencies -j4
+# RUN cabal install --only-dependencies
 
 # Add and Install Application Code
 # COPY . /opt/app
 RUN cabal install
+# RUN cabal build
 
 #>>> FINAL
 WORKDIR /opt/app
