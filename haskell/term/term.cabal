@@ -35,8 +35,9 @@ executable term
     -- other-extensions:
     build-depends:       base
                          , aeson
-                         , lens-aeson
                          , bytestring
+                         , http-conduit
+                         , lens-aeson
                          , text
     hs-source-dirs:      app
     default-language:    Haskell2010
