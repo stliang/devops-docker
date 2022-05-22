@@ -1,16 +1,19 @@
 {-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
 
-import Data.Aeson
-import Data.Text (Text)
 import Control.Applicative
 import Control.Monad
-import qualified Data.ByteString.Lazy as B
-import Network.HTTP.Conduit (simpleHttp)
+import Data.Aeson
+import Data.Aeson.Encode.Pretty (encodePretty)
+import qualified Data.ByteString.Lazy as LBS
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as E
+import qualified Data.Text.IO as TIO
 import GHC.Generics
+import Network.HTTP.Conduit (simpleHttp)
 
 data Goal = 
-  Goal { goalName :: Text
-       , status :: Text
+  Goal { goalName :: T.Text
+       , status :: T.Text
        , priority :: Int
        , value :: Int
        , funFactor :: Int
@@ -28,8 +31,8 @@ instance ToJSON Goal where
 
 -- | Type of each JSON entry in record syntax.
 data Person =
-  Person { firstName  :: !Text
-         , lastName   :: !Text
+  Person { firstName  :: !T.Text
+         , lastName   :: !T.Text
          , age        :: Int
          , likesPizza :: Bool
            } deriving (Show,Generic)
@@ -59,21 +62,30 @@ jsonURL = "http://daniel-diaz.github.io/misc/pizza.json"
 
 {--}
 -- Read the local copy of the JSON file.
-getJSON :: IO B.ByteString
-getJSON = B.readFile jsonGoal
+getJSON :: IO LBS.ByteString
+getJSON = LBS.readFile jsonGoal
 --}
 
 {--
 -- Read the local copy of the JSON file.
-getJSON :: IO B.ByteString
-getJSON = B.readFile jsonFile
+getJSON :: IO LBS.ByteString
+getJSON = LBS.readFile jsonFile
 --}
 
 {--
 -- Read the remote copy of the JSON file.
-getJSON :: IO B.ByteString
+getJSON :: IO LBS.ByteString
 getJSON = simpleHttp jsonURL
 --}
+
+lsbToText :: LBS.ByteString -> T.Text
+lsbToText = E.decodeUtf8 . LBS.toStrict
+
+-- jsonToText :: Value -> T.Text
+-- jsonToText = lsbToText . encodePretty
+
+-- prettyPrint :: Value -> IO ()
+-- prettyPrint = TIO.putStrLn . jsonToText
 
 main :: IO ()
 main = do
@@ -86,4 +98,4 @@ main = do
  -- our choice. In this case, just print it.
  case d of
   Left err -> putStrLn err
-  Right ps -> print ps
+  Right ps -> TIO.putStrLn $ lsbToText $ encodePretty ps

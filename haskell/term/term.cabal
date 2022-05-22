@@ -35,6 +35,7 @@ executable term
     -- other-extensions:
     build-depends:       base
                          , aeson
+                         , aeson-pretty
                          , bytestring
                          , http-conduit
                          , lens-aeson
