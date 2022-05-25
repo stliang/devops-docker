@@ -4,6 +4,7 @@ import Control.Applicative
 import Control.Monad
 import Data.Aeson
 import Data.Aeson.Encode.Pretty (encodePretty)
+import qualified Data.Aeson.Yaml as Aeson.Yaml
 import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as E
@@ -40,7 +41,6 @@ data Person =
 -- Instances to convert our type to/from JSON.
 
 instance FromJSON Person
-instance ToJSON Person
 
 -- | Location of the local copy, in case you have it,
 --   of the JSON file.
@@ -98,4 +98,5 @@ main = do
  -- our choice. In this case, just print it.
  case d of
   Left err -> putStrLn err
-  Right ps -> TIO.putStrLn $ lsbToText $ encodePretty ps
+  Right ps -> TIO.putStrLn $ lsbToText $ Aeson.Yaml.encode ps
+  -- Right ps -> TIO.putStrLn $ lsbToText $ encodePretty ps
